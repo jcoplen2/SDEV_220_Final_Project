@@ -43,7 +43,7 @@ cat_count = 0
 
 #create title label
 WindowName = tk.Label(MainWindow, text = "Animal Management", font = ("Arial", 20),bg = "Sky blue", fg = "black")
-WindowName.grid(row=0, column=2, padx=20, pady=20)
+WindowName.grid(row=0, column=1, padx=20, pady=20, columnspan=2)
 
 #Label and entry for name
 tk.Label(MainWindow, text="Name:", bg= 'sky blue').grid(row=1, column=1, padx=5, pady=5)
@@ -72,16 +72,20 @@ def add_cat():
     add_animal(Cat)
 
 def add_animal(animal_type):
+    #get count variables
     global animal_count, dog_count, cat_count
 
+    #get entry information
     name = name_entry.get()
     age = age_entry.get()
     breed = breed_entry.get()
 
+    #validate name entry
     if name == '':
         messagebox.showwarning("Input error","Please enter a name for the animal")
         return
-    
+
+    #validate age entry
     try:
         age = int(age)
         if age <0 or age > 30:
@@ -90,18 +94,22 @@ def add_animal(animal_type):
     except ValueError:
         messagebox.showwarning("Input error","Please enter a valid number for age")
 
+    #validate breed entry
     if breed == '':
         messagebox.showwarning("Input error","Please enter the animals breed")    
         return
     
+    #if all entries are acceptable:
     else:
-        animal = animal_type(name, age, breed)
-        animals.append(animal)
-        listbox.insert(tk.END, str(animal))
-        messagebox.showwarning("Success","Animal added successfully!")
+        animal = animal_type(name, age, breed) #animal instance
+        animals.append(animal) #update list
+        listbox.insert(tk.END, str(animal)) #update list view
+        messagebox.showwarning("Success","Animal added successfully!") #let the user know it worked
 
         #update counts
         animal_count += 1
+
+        #update dog or cat count
         if isinstance(animal, Dog):
             dog_count += 1
         else:
@@ -114,17 +122,21 @@ def add_animal(animal_type):
     age_entry.delete(0, tk.END)
     breed_entry.delete(0, tk.END)
 
-    #remove animal logic
+#remove animal logic
 def remove_animal():
+    #get count variables
     global animal_count, dog_count, cat_count
 
+    #user selection variable
     selected_animal = listbox.curselection()
     
+    #remove animal
     if selected_animal:  
         animal = animals[selected_animal[0]]  
         animals.pop(selected_animal[0])  
         listbox.delete(selected_animal[0])
 
+    #update counts
     animal_count -= 1
     if isinstance(animal, Dog):
             dog_count -= 1
@@ -133,6 +145,7 @@ def remove_animal():
 
     update_counts()
 
+#update counts view
 def update_counts():
     CountDisplay.config(text=str(animal_count))
     DogCountDisplay.config(text=str(dog_count))
@@ -143,25 +156,25 @@ tk.Button(MainWindow, text="Add Dog", command=add_dog).grid(row=4,column=1, padx
 tk.Button(MainWindow, text="Add Cat", command=add_cat).grid(row=4,column=2, padx=5, pady=5)
 
 #remove animal button
-tk.Button(MainWindow, text='Remove Animal', command=remove_animal).grid(row=6, column=2, columnspan=2, padx=5, pady=5)
+tk.Button(MainWindow, text='Remove Animal', command=remove_animal).grid(row=6, column=1, columnspan=2, padx=5, pady=5)
 
 #display current animal count
 AnimalCountLabel = tk.Label(MainWindow, text = "Total Animals:", font = ("Arial", 12),bg = "sky blue", fg = "black")
-AnimalCountLabel = AnimalCountLabel.grid(row=7, column=2, padx=5, pady=5)
+AnimalCountLabel = AnimalCountLabel.grid(row=7, column=1, padx=5, pady=5, columnspan=2)
 CountDisplay = tk.Label(MainWindow, text=str(animal_count),height=1, width=3, font=("Arial", 15))
-CountDisplay.grid(row=8, column=2, padx=5, pady=5)
+CountDisplay.grid(row=8, column=1, padx=5, pady=5, columnspan=2)
 
 #display current dog count
 DogCountLabel = tk.Label(MainWindow, text = "Total Dogs:", font = ("Arial", 12),bg = "sky blue", fg = "black")
-DogCountLabel = DogCountLabel.grid(row=9, column=2, padx=5, pady=5)
+DogCountLabel = DogCountLabel.grid(row=9, column=1, padx=5, pady=5)
 DogCountDisplay = tk.Label(MainWindow, text=str(dog_count),height=1, width=3, font=("Arial", 15))
-DogCountDisplay.grid(row=10, column=2, padx=5, pady=5)
+DogCountDisplay.grid(row=10, column=1, padx=5, pady=5)
 
 #display current cat count
 CatCountLabel = tk.Label(MainWindow, text = "Total Cats:", font = ("Arial", 12),bg = "sky blue", fg = "black")
-CatCountLabel = CatCountLabel.grid(row=9, column=1, padx=5, pady=5)
+CatCountLabel = CatCountLabel.grid(row=9, column=2, padx=5, pady=5)
 CatCountDisplay = tk.Label(MainWindow, text=str(cat_count),height=1, width=3, font=("Arial", 15))
-CatCountDisplay.grid(row=10, column=1, padx=5, pady=5)
+CatCountDisplay.grid(row=10, column=2, padx=5, pady=5)
 
 #start program
 if __name__ == '__main__':
