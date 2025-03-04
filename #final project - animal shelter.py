@@ -86,13 +86,19 @@ def add_animal(animal_type):
         return
 
     #validate age entry
-    try:
+    if age == '':
+        messagebox.showwarning("Input error","Please enter age")
+        return
+    
+    if age.isdigit():
         age = int(age)
-        if age <0 or age > 30:
-            messagebox.showwarning("Input error","Age must be between 0-30")
-            return
-    except ValueError:
+    else:
         messagebox.showwarning("Input error","Please enter a valid number for age")
+        return
+    
+    if age <0 or age > 30:
+        messagebox.showwarning("Input error","Age must be between 0-30")
+        return
 
     #validate breed entry
     if breed == '':
